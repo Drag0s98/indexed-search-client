@@ -23,5 +23,5 @@
 
     }
   },
-  "include": ["src/**/*", "vite.config.ts",  "**/*.ts",  "**/*.tsx"]
+  "include": ["src/**/*", "vite.config.ts",  "**/*.ts",  "**/*.tsx"],
 }
