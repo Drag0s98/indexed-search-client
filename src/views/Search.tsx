@@ -1,20 +1,14 @@
-import { useState } from "react";
+import { useContext } from "react";
 
-import Card from "@components/Card";
-import SearchBar from "@components/SearchBar";
-import { IProduct } from "@src/interfaces/Product.interface";
+import { SearchContext } from "@src/context/SearchContext";
+import ProductDisplay from "@components/Card";
 
 export default function Search() {
-  const [data, setData] = useState<IProduct[]>([]);
+  const { searchData } = useContext(SearchContext);
 
   return (
-    <section className="w-full flex items-center justify-center p-10 flex-col">
-      <SearchBar setData={setData} />
-      <article className="mt-10 grid grid-cols-5 gap-20">
-        {data.map((product) => (
-          <Card key={product.asin} product={product} />
-        ))}
-      </article>
-    </section>
+    <div className="max-h-screen overflow-auto">
+      <ProductDisplay productData={searchData} />
+    </div>
   );
 }

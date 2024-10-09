@@ -31,7 +31,7 @@ export const searchItem = async (
       params: {
         index: "amazon-store-search",
         query: text,
-        to: 10,
+        to: 12,
         from: 0,
       },
     });

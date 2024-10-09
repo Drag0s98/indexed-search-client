@@ -1,13 +1,10 @@
 import { searchItem, suggestionRequest } from "@src/api/search";
-import { IProduct } from "@src/interfaces/Product.interface";
-import { useState } from "react";
+import { SearchContext } from "@src/context/SearchContext";
+import { useContext, useState } from "react";
+import { FaSearch } from "react-icons/fa";
 
-interface Props {
-  readonly setData: React.Dispatch<React.SetStateAction<IProduct[]>>;
-}
-
-export default function SearchBar({ setData }: Props) {
-  const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
+export default function SearchBar() {
+  const { setSearchData: setData } = useContext(SearchContext);
   const [searchValue, setSearchValue] = useState("");
   const [suggestions, setSuggestions] = useState<
     [{ prefix: string; id: string }] | []
@@ -15,7 +12,6 @@ export default function SearchBar({ setData }: Props) {
 
   const handleOnChange = async (text: string): Promise<void> => {
     setSearchValue(text);
-    setShowSuggestions(true);
     const data = await suggestionRequest(text);
     setSuggestions(data);
   };
@@ -24,53 +20,45 @@ export default function SearchBar({ setData }: Props) {
     event.preventDefault();
     const { data } = await searchItem(searchValue);
     setData(data);
-    setShowSuggestions(false);
+    setSuggestions([])
   };
 
   return (
-    <article className="w-96">
-      <form
-        className="w-full"
-        action=""
-        onSubmit={(event) => handleSubmit(event)}
+    <form
+      onSubmit={handleSubmit}
+      className="hidden md:flex flex-grow max-w-xl mx-4"
+    >
+      <div className="relative flex-grow">
+        <input
+          type="text"
+          placeholder="Search products..."
+          className="w-full py-2 px-4 bg-gray-800 text-white rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+          value={searchValue}
+          onChange={(element) => handleOnChange(element.target.value)}
+        />
+        {suggestions.length > 0 && (
+          <div className="absolute z-10 w-full bg-white mt-1 rounded-md shadow-lg">
+            {suggestions.map(({ prefix, id }) => (
+              <button
+                key={id}
+                className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer"
+                onClick={() => {
+                  setSearchValue(prefix)
+                  setSuggestions([])
+                }}
+              >
+                {prefix}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+      <button
+        type="submit"
+        className="bg-yellow-400 text-gray-900 px-4 rounded-r-md hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-600"
       >
-        <div className="relative w-full">
-          <input
-            type="search"
-            id="search-dropdown"
-            className="outline-none p-2.5 w-full z-20 text-sm text-gray-900 rounded-e-lg dark:focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Search"
-            value={searchValue}
-            required
-            onChange={(element) => handleOnChange(element.target.value)}
-          />
-          <button
-            type="submit"
-            className="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-[#febd69] rounded-e-lg border border-[#febd69] hover:bg-[#dfa65d]"
-          >
-            <span
-              className="iconify mdi--search"
-              style={{ width: "24px", height: "24px" }}
-            ></span>
-            <span className="sr-only">Search</span>
-          </button>
-        </div>
-      </form>
-      {showSuggestions && suggestions.length > 0 && (
-        <div className="bg-neutral-100 w-[88%] border-t">
-          {suggestions.map(({ prefix, id }) => (
-            <button
-              className="hover:bg-neutral-200 text-left"
-              key={id}
-              onClick={() => {
-                setSearchValue(prefix);
-              }}
-            >
-              <p className="font-bold">{prefix}</p>
-            </button>
-          ))}
-        </div>
-      )}
-    </article>
+        <FaSearch />
+      </button>
+    </form>
   );
 }

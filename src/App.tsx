@@ -3,14 +3,17 @@ import AppLayout from "./layout/AppLayout";
 import Search from "@views/Search";
 
 import "@styles/main.scss";
+import SearchProvider from "./context/SearchContext";
 
 function App() {
   return (
-    <AppLayout>
-      <main className="bg-neutral-200 w-full h-screen">
-        <Search />
-      </main>
-    </AppLayout>
+    <SearchProvider>
+      <AppLayout>
+        <main className="bg-neutral-200 w-full h-screen">
+          <Search />
+        </main>
+      </AppLayout>
+    </SearchProvider>
   );
 }
 
