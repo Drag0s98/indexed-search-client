@@ -21,7 +21,8 @@ export const suggestionRequest = async (text: string) => {
 };
 
 export const searchItem = async (
-  text: string
+  text: string,
+  sendPagination: IPagination
 ): Promise<{
   data: IProduct[];
   pagination: IPagination;
@@ -31,8 +32,8 @@ export const searchItem = async (
       params: {
         index: "amazon-store-search",
         query: text,
-        to: 12,
-        from: 0,
+        to: sendPagination.to,
+        from: sendPagination.from,
       },
     });
 

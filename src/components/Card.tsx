@@ -30,12 +30,12 @@ const ProductCard: React.FC<ProductCardProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105">
+    <div className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105 w-[80%]">
       <div className="relative pb-[75%] sm:pb-[100%]">
         <img
           src={imgUrl}
           alt={title}
-          className="absolute top-0 left-0 w-full h-full object-cover"
+          className="absolute top-0 left-0 h-[90%] w-[90%] object-cover"
         />
       </div>
       <div className="p-4">

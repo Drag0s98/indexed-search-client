@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { FaSearch, FaShoppingCart, FaUser, FaBars } from "react-icons/fa";
+import { useState, useEffect } from "react";
+import { FaShoppingCart, FaUser, FaBars } from "react-icons/fa";
 import { IoMdArrowDropdown } from "react-icons/io";
 import SearchBar from "./SearchBar";
 
 const Header = () => {
   const [isSticky, setIsSticky] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
   const [cartItems, setCartItems] = useState(0);
-  const [suggestions, setSuggestions] = useState([]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,23 +15,6 @@ const Header = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  const handleSearch = (e) => {
-    const query = e.target.value;
-    setSearchQuery(query);
-    // Simulated auto-suggest functionality
-    if (query.length > 0) {
-      setSuggestions(["Product 1", "Product 2", "Product 3"]);
-    } else {
-      setSuggestions([]);
-    }
-  };
-
-  const handleSubmitSearch = (e) => {
-    e.preventDefault();
-    // Handle search submission
-    console.log("Search submitted:", searchQuery);
-  };
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -172,23 +153,7 @@ const Header = () => {
         {/* Mobile menu */}
         {isMobileMenuOpen && (
           <div className="md:hidden mt-4">
-            <form onSubmit={handleSubmitSearch} className="mb-4">
-              <div className="flex">
-                <input
-                  type="text"
-                  placeholder="Search products..."
-                  className="flex-grow py-2 px-4 bg-gray-800 text-white rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-600"
-                  value={searchQuery}
-                  onChange={handleSearch}
-                />
-                <button
-                  type="submit"
-                  className="bg-yellow-400 text-gray-900 px-4 rounded-r-md hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-600"
-                >
-                  <FaSearch />
-                </button>
-              </div>
-            </form>
+            <SearchBar isMobileMenuOpen={isMobileMenuOpen} />
             <nav className="flex flex-col space-y-2">
               <a href="#" className="hover:text-gray-300">
                 Categories
