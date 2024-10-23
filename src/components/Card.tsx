@@ -72,7 +72,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
 export default function ProductDisplay({ productData }: Props) {
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 overflow-hidden">
       <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
         {productData.map((product) => (
           <ProductCard key={product.asin} {...product} />
